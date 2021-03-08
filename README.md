@@ -100,12 +100,6 @@ Experimental Results
 
 ![image](https://user-images.githubusercontent.com/61686244/110330152-ca0d0a00-8060-11eb-83a8-0309fe5e8106.png)
 
-
-
-![image](https://user-images.githubusercontent.com/61686244/94658338-a0c3b180-033d-11eb-91f6-ebfbb9b0284d.png)
-
-![image](https://user-images.githubusercontent.com/61686244/94658381-ae793700-033d-11eb-9448-b9d176b0817c.png)
-
 ![image](https://user-images.githubusercontent.com/61686244/110330168-ced1be00-8060-11eb-9625-6a8f62570492.png)
 
 ![image](https://user-images.githubusercontent.com/61686244/110330187-d42f0880-8060-11eb-83bb-04c172c179e8.png)
