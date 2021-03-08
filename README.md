@@ -39,43 +39,79 @@ Proposed Method
 ![image](https://user-images.githubusercontent.com/61686244/110329091-836ae000-805f-11eb-9a0f-a0fec6c4bdee.png)
 
   * ![image](https://user-images.githubusercontent.com/61686244/110329135-91206580-805f-11eb-9028-2f694fa00361.png)는 각각 t 번째 UD Block의 LR 특징과 HR 특징을 의미
+  * ![image](https://user-images.githubusercontent.com/61686244/110329235-ad240700-805f-11eb-8bee-faac4674b4ab.png)은 모든 UD Block에 의해 만들어진 LR 특징들을 압축된 값
+  * ![image](https://user-images.githubusercontent.com/61686244/110329291-ba40f600-805f-11eb-8361-50a4a7bdbdb6.png)는 첫 번째 up sampling layer에 의해 통과된 값
+  * ![image](https://user-images.githubusercontent.com/61686244/110329337-c88f1200-805f-11eb-9e37-58bb50566f1b.png)는 두 번째 up sampling layer의 출력 값
+  * ![image](https://user-images.githubusercontent.com/61686244/110329373-d775c480-805f-11eb-95a3-0eff77fb5482.png)는 복원된 영상
+
+  * ⓵ Low-level feature Extraction Module은 두 개의 Conv로 구성, 입력 영상을 특징 벡터 ![image](https://user-images.githubusercontent.com/61686244/110329442-ed838500-805f-11eb-9813-93a0f321a9e7.png)에 맞춰줌
+  * ⓶ Compact Projection Module은 t 개의 UD 블록과 2개의 압축 층을 가지고 있음, UD Block은 dense 연결 되어 있고 LR, HR특징을 출력함 
+  * 첫 번째 압축 층의 입력으로 ![image](https://user-images.githubusercontent.com/61686244/110329493-04c27280-8060-11eb-898d-150a9711712d.png) 들어가 1x1 Conv 통과
+  * 첫 번째 up sampling 층의 입력으로 ![image](https://user-images.githubusercontent.com/61686244/110329554-1ad03300-8060-11eb-8577-34e977e41120.png)
+  * F_H ![image](https://user-images.githubusercontent.com/61686244/110329627-39362e80-8060-11eb-8b27-1c1f633ef644.png)<= 두 번째 압축층과 up sampling  층 표현
+  * ⓷ Reconstruction Module은 3x3 Conv를 사용하여 3채널로 만들어 복원하는데 사용
+  * LR공간과 HR 공간의 특징을 결합하여 사용, UD Block에서 low level과 high level에서 만들어진 HR 특징은 복원을 하는데 사용이되며 이러한 사용은 높은 퀄리티로 HR영상을 만듦
+  * LR 공간의 기능은 추가적인 저주파 정보를 제공하여 HR 기능과 함께 효과적인 재구성을 만듦
+  
+Projection Module
+-----------------
+![image](https://user-images.githubusercontent.com/61686244/110329751-5c60de00-8060-11eb-9100-94479e7e9751.png)
+
+  * DBPN에서 영감을 받아 compact projection module 제안
+  * 기존 DBPN을 3가지 측면에서 다르게 수정하여 정확도 감소 없이 만듦
+  * 1) DBPN에서는 down projection으로부터 만들어진 LR 특징을 사용하지 않고 간과하였음, 반면에 제안된 네트워크는 HR 과 LR 특징을 모두 사용
+  * 2) 복잡성을 낮추기 위해 DBPN에서 사용하던 deconv 대신 sub-pixel conv를 사용 
+  * 3) UD Block의 학습 능력을 향상시키기 위해 local residual connection사용
+  * 4x4 conv를 사용하여 HR space를 LR space에 매핑시킴
+  
+![image](https://user-images.githubusercontent.com/61686244/110329814-700c4480-8060-11eb-8d0d-b84d69ebe572.png)
+
+![image](https://user-images.githubusercontent.com/61686244/110329829-74d0f880-8060-11eb-80c5-19d99e69833d.png)
+
+![image](https://user-images.githubusercontent.com/61686244/110329851-7995ac80-8060-11eb-9a0c-29e7ac98261c.png)
+
+![image](https://user-images.githubusercontent.com/61686244/110329861-7d293380-8060-11eb-8d7d-e2117c2b5869.png)
+
+![image](https://user-images.githubusercontent.com/61686244/110329884-81ede780-8060-11eb-8ed4-4f3a286bfd6d.png)
+  
+  * duplication operation는 네트워크 내 LR특징의 가중치를 증가시키는데 목적을 둠
+  * 종속된 up sampling, down sampling 층은 반복적으로 residual 특징을 학습하고, 반복적으로 기능을 개선하는 자체 수정 절차를 가짐
+
+Experimental Results
+--------------------
+  * Train : DIV2K
+  * Test : Set5, Set14, Bsd100, Urban100
+  * SR Accuracy : PSNR, SSIM
+  * Lightweight :　parameters, Multi-Adds로 평가
+
+![image](https://user-images.githubusercontent.com/61686244/110330037-a5189700-8060-11eb-9afe-e60b603d7c61.png)
+
+  * 위 그림에서 알 수 있듯이, UD Block을 8개 사용했을 때 각 Block의 HR을 사용하는 것보다 1, 4 8 번째 HR을 사용하는게 LR과 HR 특징을 활용하는데 있어 균형을 맞출 수 있음 
+  * HR특징들이 좋은 성능에 영향을 미치긴 하지만 다수의 HR 특징은 균형을 깸
+  
+![image](https://user-images.githubusercontent.com/61686244/110330090-b366b300-8060-11eb-8192-5b0228dd2b2f.png)
+
+  * CBPN-L : LR 특징들만 사용
+  * CBPN-H : HR 특징들만 사용
+  * CBPN : LR, HR 특징들 모두 사용
+  * HR 과 LR 특징 공간에 이미지 SR에 유용한 보완 정보가 포함되어 있음을 의미 
+
+![image](https://user-images.githubusercontent.com/61686244/110330144-c6798300-8060-11eb-952e-6f07f6bd2ee2.png)
+
+![image](https://user-images.githubusercontent.com/61686244/110330152-ca0d0a00-8060-11eb-83a8-0309fe5e8106.png)
+
 
 Channel Attention
 -----------------
 ![image](https://user-images.githubusercontent.com/61686244/94658338-a0c3b180-033d-11eb-91f6-ebfbb9b0284d.png)
+
 ![image](https://user-images.githubusercontent.com/61686244/94658381-ae793700-033d-11eb-9448-b9d176b0817c.png)
 
-* Attention : 사용 가능한 자원들 중 가장 유익한 자원 요소로 편향 시키는 방법
-* LR 공간에는 풍부한 저 주파수와 가치있는 고 주파수의 성분들을 가지고 있음
-* 기존의 Conv layer의 각 채널들은 local receptive field 에서 수행을 하게 돼서 결과적으로 Conv후에 output은 local 영역 밖의 정보에 접근을 할 없음
-* 채널 별 글로벌 공간 정보를 얻기 위해 입력으로 들어온 채널을 global average pooling을 적용하여 single value로 만듦
-* 비선형적으로 상호 작용을 할 수 있고 여러 채널의 기능을 강조 할 수 있는 gating mechanism을 sigmoid로 적용
-* global average pooling과  gating mechanism sigmoid를 적용한 Channel attention을 residual block에 적용한 RCAB를 이용
+![image](https://user-images.githubusercontent.com/61686244/110330168-ced1be00-8060-11eb-9625-6a8f62570492.png)
 
-Investigation of RIR and CA
----------------------------
-* Train Set : DIV2K / Test Set : Set14, B100, Urban100, Manga109 
-![image](https://user-images.githubusercontent.com/61686244/94658476-cf418c80-033d-11eb-8f36-3b35dfc5ec11.png)
+![image](https://user-images.githubusercontent.com/61686244/110330187-d42f0880-8060-11eb-83bb-04c172c179e8.png)
+
+![image](https://user-images.githubusercontent.com/61686244/110330194-d7c28f80-8060-11eb-8ca3-05c51418bf4e.png)
 
 
-BI degradation model
---------------------
-![image](https://user-images.githubusercontent.com/61686244/94657626-aa98e500-033c-11eb-90b4-582f04839829.png)
 
-![image](https://user-images.githubusercontent.com/61686244/94657657-b7b5d400-033c-11eb-865b-27d91d4669f2.png)
-
-BD degradation model
---------------------
-![image](https://user-images.githubusercontent.com/61686244/94657705-ce5c2b00-033c-11eb-9e5b-1625ef2c2da6.png)
-![image](https://user-images.githubusercontent.com/61686244/94657722-d5833900-033c-11eb-8205-399c1a6645a3.png)
-
-Object Recognition Performance
-------------------------------
-![image](https://user-images.githubusercontent.com/61686244/94657847-05cad780-033d-11eb-8ef1-f6e6e5af39cc.png)
-
-Conclusions
------------
-* RIR, LSC, SSC을 이용하여 깊은 네트워크를 만들어 큰 Receptive field를 얻음
-* RIR은 많은 skip connection을 통해 저 주파수 성분을 우회시켜 main network가 고 주파수 정보를 학습하는데 초점을 맞춤
-* 각 채널들 사이의 상호 의존성을 고려하여 각 채널의 유익한 정도에 따른 채널을 재정의하는 Channel Attention을 제안
-* RCAN은 SR, BI, BD degradation model에서도 좋은 성능을 발휘함
