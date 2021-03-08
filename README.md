@@ -26,7 +26,7 @@ Introduction
 
 Realted Work
 ------------
-  * VDSR, DRRN, BAN, EDSR, MemNet 등과 같은 SOTA Net들은 높은 SR 정확도를 얻는데 주 목표를 하고 있지만 많은 operations 와 parameters를 가져 저전력 컴퓨터, 실시간에 적용하기 어려움 
+  * VDSR, DRRN, GAN, EDSR, MemNet 등과 같은 SOTA Net들은 높은 SR 정확도를 얻는데 주 목표를 하고 있지만 많은 operations 와 parameters를 가져 저전력 컴퓨터, 실시간에 적용하기 어려움 
   * CARN 저자는 cascading residual block을 이용하여 계산 복잡성을 줄였고 group conv, point wise conv를 사용하여 더 적은 모델을 만듦
   * 제안된 네트워크는 deconv 대신 sub pixel conv를 이용함으로써 operation을 줄였으며 채널 크기를 줄여 SR Net을 압축 하였음
     
