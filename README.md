@@ -86,7 +86,7 @@ Experimental Results
 
 ![image](https://user-images.githubusercontent.com/61686244/110330037-a5189700-8060-11eb-9afe-e60b603d7c61.png)
 
-  * 위 그림에서 알 수 있듯이, UD Block을 8개 사용했을 때 각 Block의 HR을 사용하는 것보다 1, 4 8 번째 HR을 사용하는게 LR과 HR 특징을 활용하는데 있어 균형을 맞출 수 있음 
+  * 위 그림에서 알 수 있듯이, UD Block을 8개 사용했을 때 각 Block의 HR을 사용하는 것보다 1, 4, 8 번째 HR을 사용하는게 LR과 HR 특징을 활용하는데 있어 균형을 맞출 수 있음 
   * HR특징들이 좋은 성능에 영향을 미치긴 하지만 다수의 HR 특징은 균형을 깸
   
 ![image](https://user-images.githubusercontent.com/61686244/110330090-b366b300-8060-11eb-8192-5b0228dd2b2f.png)
