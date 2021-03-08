@@ -20,7 +20,7 @@ Introduction
   * CARN의 저자는 LR 특징 공간에서 Residual을 학습하기 위해 다수의 shortcut connection을 사용하는 종속 잔여 네트워크를 제안, 재귀적인 방법을 이용해 Mobile Applications에서도 사용가능하게 만듦(LR 공간만 이용하여 특징 추출)
   * information distillation Net또한 LR공간에서 HR Residual 특징을 학습함으로써 적은 parameters 와 계산량을 가지고 있음(LR 공간만 이용하여 특징 추출)
   * DBPN에서 영감을 받아 LR과 HR공간 모두에서 Residual learning을 통해 정확한 SR결과를 얻는 네트워크 제안
-  * HR 이미지 공간에서 Residuald,f 학습하여 LR 이미지에 대한 HR 이미지를 재구성하는 것이 효율적인 방법
+  * HR 이미지 공간에서 Residual를 학습하여 LR 이미지에 대한 HR 이미지를 재구성하는 것이 효율적인 방법
   * DBPN은 큰 필터를 이용하여 복잡한 계산을 가지고 있음, back-projection Net을 통해 얻어진 다수의 HR 특징들로부터 HR 영상을 복원하는 구조
   * SISR의 효율성과 정확도 사이에서 좋은 균형을 달성하기위해 LR와 HR 공간에서 Hybrid Residual Feature를 학습할 수 있는 Compact back projection Net을 제안 
 
